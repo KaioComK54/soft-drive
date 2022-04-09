@@ -1,27 +1,20 @@
-import React from "react";
-import Subheader from "components/Subheader";
-
 import addFile from "assets/add-file.png";
 
 import { Container } from "./styles";
 
-interface props {
-  file: any;
-}
-
-const Fileuploader = ({ file }: props) => {
+const FileEmpty = () => {
   return (
     <Container>
       <img alt="Adicionar imagem" src={addFile} />
       <div className="guide-box">
-        <p className="guide-title">Selecione seus documentos</p>
+        <p className="guide-title">Selecione seu documento</p>
         <p className="guide-item">* Suporta somente PDF e TXT</p>
         <p className="guide-item">
-          * O tamanho do arquivo de ser inferior a 2 MB
+          * O tamanho do arquivo deve ser no máximo 2 MB.
         </p>
       </div>
     </Container>
   );
 };
 
-export default Fileuploader;
+export default FileEmpty;

@@ -1,22 +1,26 @@
 import Subheader from "components/Subheader";
-import FileUploaderCustom from "components/Fileuploader";
 
 import { Container, FileUploaderContainer } from "./styles";
+
+import FileStatus from "components/Filestatus";
+import ActionButtons from "./components/ActionButtons";
 
 import usefile from "validations/useFile";
 import { useRef } from "react";
 
 const Upload = () => {
-  const { file, setFile, validadeFile, fileTypes, maxSize, errorMessage } =
-    usefile();
-
   const inputRef = useRef<any>();
+  const { file, setFile, validadeFile, errorMessage, setErrorMessage } =
+    usefile();
 
   const handleSelectFile = (file: any) => {
     try {
       validadeFile(file);
+
+      setFile(file);
     } catch (error: any) {
-      console.log("Um erro aqui: ", error.message);
+      //todo -> fazer o tratamento do erro
+      //setErrorMessage(error.message);
     }
   };
 
@@ -30,17 +34,14 @@ const Upload = () => {
         onChange={({ target }) =>
           handleSelectFile(target && target.files && target.files[0])
         }
-        value={file}
         accept=".pdf, .txt"
       />
-      <FileUploaderContainer onClick={() => inputRef?.current?.click()}>
-        <>
-          <p className="text">Clique ou arraste seus documentos</p>
-          <FileUploaderCustom file={file} />
-          {!!errorMessage && <p>{errorMessage}</p>}
-        </>
+      <FileUploaderContainer
+        onClick={() => !file && inputRef?.current?.click()}
+      >
+        <FileStatus file={file} />
+        <ActionButtons file={file} setFile={setFile} />
       </FileUploaderContainer>
-      {!!errorMessage && <p>{errorMessage}</p>}
     </Container>
   );
 };

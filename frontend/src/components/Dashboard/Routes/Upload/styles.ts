@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { colors } from "styles/_global.style";
 
 export const Container = styled.div`
   width: 100%;
@@ -21,14 +20,12 @@ export const FileUploaderContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  position: relative;
 
-  .text {
+  .buttons {
     width: 80%;
-    margin-bottom: 16px;
-    text-align: left;
-    color: ${colors.textColor};
-    font-size: 20px;
-    font-weight: 400;
+    display: flex;
+    justify-content: end;
   }
 
   @media (max-width: 1000px) {
@@ -36,10 +33,5 @@ export const FileUploaderContainer = styled.div`
     grid-gap: 0px;
     height: calc(100vh - (40px + 48px + 56px));
     justify-content: center;
-
-    .text {
-      font-size: 15px;
-      text-align: center;
-    }
   }
 `;

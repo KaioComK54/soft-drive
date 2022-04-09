@@ -14,20 +14,25 @@ export const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+`;
 
-  .guide-box {
-    margin-left: 16px;
-    color: ${colors.textColor};
-    font-weight: 400;
-  }
+export const Title = styled.h3`
+  width: 80%;
+  margin-bottom: 16px;
+  text-align: left;
+  color: ${colors.textColor};
+  font-size: 20px;
+  font-weight: 400;
 
-  .guide-title {
-    margin-bottom: 20px;
-    font-size: 18px;
-  }
+  @media (max-width: 1000px) {
+    padding: 8px;
+    grid-gap: 0px;
+    height: calc(100vh - (40px + 48px + 56px));
+    justify-content: center;
 
-  .guide-item {
-    margin-bottom: 8px;
-    font-size: 16px;
+    .text {
+      font-size: 15px;
+      text-align: center;
+    }
   }
 `;
