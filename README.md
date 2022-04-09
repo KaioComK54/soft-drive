@@ -1,6 +1,6 @@
-<img src="icon.png" align="right" />
+<img src="frontend/src/assets/lock.png" align="right" />
 
-# Soft drive [![Soft-drive](https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://github.com/sindresorhus/awesome#readme)
+# Soft drive
 
 > Um drive mais simples
 
