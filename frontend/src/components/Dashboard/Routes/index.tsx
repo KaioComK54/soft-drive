@@ -7,8 +7,8 @@ import Upload from "./Upload";
 const RoutesContent = () => {
   return (
     <Container>
-      <Route path="/" element={<Drive />}></Route>
-      <Route path="/upload" element={<Upload />}></Route>
+      <Route path="meu-drive" element={<Drive />}></Route>
+      <Route path="upload" element={<Upload />}></Route>
     </Container>
   );
 };

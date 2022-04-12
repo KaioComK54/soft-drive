@@ -29,7 +29,7 @@ const Drive = () => {
       <Subheader title="Meu drive" />
       <FileContainer>
         {files.map((file) => (
-          <Filerender file={file} />
+          <Filerender key={file.name} file={file} />
         ))}
       </FileContainer>
     </Container>

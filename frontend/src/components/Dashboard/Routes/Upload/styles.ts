@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { colors } from "styles/_global.style";
 
 export const Container = styled.div`
   width: 100%;
@@ -26,6 +27,30 @@ export const FileUploaderContainer = styled.div`
     width: 80%;
     display: flex;
     justify-content: end;
+    margin-top: 10px;
+
+    button {
+      padding: 8px 16px;
+      margin-left: 10px;
+      border: none;
+      font-size: 18px;
+      border-radius: 8px;
+      font-weight: 500;
+      background-color: transparent;
+      color: ${colors.primaryLight};
+      border: 1px solid ${colors.primaryLight};
+      cursor: pointer;
+
+      &.primary {
+        background-color: ${colors.primaryDark};
+        color: ${colors.backgroundDefault};
+        border: none;
+      }
+
+      :hover {
+        opacity: 0.7;
+      }
+    }
   }
 
   @media (max-width: 1000px) {

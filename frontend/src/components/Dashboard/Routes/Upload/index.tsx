@@ -6,12 +6,14 @@ import FileStatus from "components/Filestatus";
 import ActionButtons from "./components/ActionButtons";
 
 import usefile from "validations/useFile";
+import useError from "validations/useError";
 import { useRef } from "react";
 
 const Upload = () => {
   const inputRef = useRef<any>();
-  const { file, setFile, validadeFile, errorMessage, setErrorMessage } =
-    usefile();
+  const { file, setFile, validadeFile } = usefile();
+
+  const { validateError } = useError();
 
   const handleSelectFile = (file: any) => {
     try {
@@ -19,10 +21,11 @@ const Upload = () => {
 
       setFile(file);
     } catch (error: any) {
-      //todo -> fazer o tratamento do erro
-      //setErrorMessage(error.message);
+      validateError(error);
     }
   };
+
+  const handleSubmitFile = () => {};
 
   return (
     <Container>
@@ -40,7 +43,11 @@ const Upload = () => {
         onClick={() => !file && inputRef?.current?.click()}
       >
         <FileStatus file={file} />
-        <ActionButtons file={file} setFile={setFile} />
+        <ActionButtons
+          file={file}
+          setFile={setFile}
+          submitFile={handleSubmitFile}
+        />
       </FileUploaderContainer>
     </Container>
   );

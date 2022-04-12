@@ -9,6 +9,8 @@ export const colors = {
   secondaryLight: "#DADDE1",
   secondaryDark: "#F0F2F4",
   lightBlue: "#E9F1FE",
+  success: "#2ecc71",
+  error: "#e74c3c",
 };
 
 export const GlobalStyles = createGlobalStyle`

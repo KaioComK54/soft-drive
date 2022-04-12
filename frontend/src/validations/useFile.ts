@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
-import ValidationError from "errors/validationError";
+import FileError from "errors/fileError";
 
 const fileTypes = ["TXT", "PDF"];
 const maxSize = 2; // In .MB
@@ -18,22 +18,13 @@ const fileNameBlackList = {
 
 const useFile = () => {
   const [file, setFile] = useState();
-  const [errorMessage, setErrorMessage] = useState<Error | null>();
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setErrorMessage(null);
-    }, 10000);
-
-    return () => clearTimeout(timer);
-  }, [errorMessage]);
 
   const validateName = (file: File): never | any => {
     const { name } = file;
 
     const [fileName] = name.split(".");
 
-    if (!fileName) throw new ValidationError(fileErrorsMessage.nameError);
+    if (!fileName) throw new FileError(fileErrorsMessage.nameError);
 
     const specialCaracteres = fileNameBlackList.special;
     const directorySnnipets = fileNameBlackList.directory;
@@ -47,7 +38,7 @@ const useFile = () => {
     );
 
     if (includesSpecials || includesDirectory)
-      throw new ValidationError(fileErrorsMessage.nameError);
+      throw new FileError(fileErrorsMessage.nameError);
   };
 
   const validateType = (file: File): never | any => {
@@ -55,11 +46,11 @@ const useFile = () => {
 
     const [_, type] = name.split(".");
 
-    if (!type) throw new ValidationError(fileErrorsMessage.typeError);
+    if (!type) throw new FileError(fileErrorsMessage.typeError);
 
     const isValidType = fileTypes.includes(type.toLocaleUpperCase());
 
-    if (!isValidType) throw new ValidationError(fileErrorsMessage.typeError);
+    if (!isValidType) throw new FileError(fileErrorsMessage.typeError);
   };
 
   const validateSize = (file: File): never | any => {
@@ -67,8 +58,7 @@ const useFile = () => {
 
     const isValidFileSize = size / 1000 / 1000 <= maxSize;
 
-    if (!isValidFileSize)
-      throw new ValidationError(fileErrorsMessage.sizeError);
+    if (!isValidFileSize) throw new FileError(fileErrorsMessage.sizeError);
   };
 
   const validadeFile = (file: File) => {
@@ -83,8 +73,6 @@ const useFile = () => {
     validadeFile,
     fileTypes,
     maxSize,
-    errorMessage,
-    setErrorMessage,
   };
 };
 

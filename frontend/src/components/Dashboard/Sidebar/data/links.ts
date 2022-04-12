@@ -9,7 +9,7 @@ const links = [
     icon: drive,
     iconSelected: driveSelected,
     label: "Meus documentos",
-    url: "/",
+    url: "/meu-drive",
   },
   {
     icon: upload,
