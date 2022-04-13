@@ -3,6 +3,11 @@ import { Routes, Route, Navigate } from "react-router-dom";
 
 import PrivateRoute, { PrivateRouteProps } from "./Routes/PrivateRoute";
 
+//Open route components
+import Login from "./Login";
+import Register from "./Register";
+
+//Private route components
 import Dashboard from "./Dashboard";
 import Upload from "components/Dashboard/Routes/Upload";
 import Drive from "components/Dashboard/Routes/Drive";
@@ -14,8 +19,8 @@ const defaultProtectedRouteProps: Omit<PrivateRouteProps, "outlet"> = {
 const RoutesContent = () => {
   return (
     <Routes>
-      <Route path="/entrar" element={<div>Login</div>} />
-      <Route path="/registro" element={<div>Registro</div>} />
+      <Route path="/entrar" element={<Login />} />
+      <Route path="/registro" element={<Register />} />
 
       <Route
         path="/"
