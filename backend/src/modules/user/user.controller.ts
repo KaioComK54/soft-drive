@@ -1,4 +1,13 @@
-import { Controller, Post, Body, ValidationPipe } from '@nestjs/common';
+import {
+  Req,
+  Controller,
+  Post,
+  Get,
+  Body,
+  ValidationPipe,
+  UseGuards,
+} from '@nestjs/common';
+import { JwtAuthGuard } from '../shared/jwt/jwt.guard';
 import { UserService } from './user.service';
 import { UserDto } from './dto/user.dto';
 
@@ -12,5 +21,11 @@ export class UserController {
     body: UserDto,
   ): Promise<any> {
     return this._userService.createUser(body);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('me')
+  async getPersonalData(@Req() req: any): Promise<any> {
+    return this._userService.getUserById(req.user.id);
   }
 }

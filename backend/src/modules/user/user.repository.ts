@@ -6,8 +6,12 @@ import { User } from './user.schema';
 export class UserRepository {
   constructor(@Inject('UserModel') private _userModel: Model<User>) {}
 
-  async findOne(id: string): Promise<User> {
-    return await this._userModel.findOne({ _id: id });
+  async findOneById(id: string): Promise<User> {
+    return await this._userModel.findById(id);
+  }
+
+  async findOneByEmail(email: string): Promise<User> {
+    return await this._userModel.findOne({ email });
   }
 
   async create(user: User): Promise<User> {
