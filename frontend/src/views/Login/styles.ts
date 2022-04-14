@@ -41,18 +41,6 @@ export const LoginBox = styled.div`
   }
 `;
 
-export const Input = styled.input`
-  width: 100%;
-  height: 48px;
-  outline: 0;
-  border-radius: 8px;
-  border: none;
-  padding-left: 24px;
-  font-size: 16px;
-  margin-bottom: 24px;
-  background-color: rgba(196, 196, 200, 0.3);
-`;
-
 export const Button = styled.button`
   border: none;
   font-size: 14px;

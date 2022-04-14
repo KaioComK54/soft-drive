@@ -1,6 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { LoginContainer, LoginBox, Input, Button } from "./styles";
 
+// import Input from "components/Input";
+
 import Logo from "components/Logo";
 
 const Register = () => {
@@ -17,6 +19,15 @@ const Register = () => {
         <Input placeholder="Email" />
         <Input placeholder="Senha" />
         <Input placeholder="Confirmar senha" />
+
+        {/* <Input
+          name="email"
+          onChange={handleEmail}
+          errors={[]}
+          value={email}
+          placeholder="Email"
+        /> */}
+
         <div className="button-container">
           <Button onClick={() => navigate("/entrar")}>
             Já possuo um conta
