@@ -4,7 +4,11 @@ import { HttpExceptionFilter } from './modules/shared/exceptionFilter/httpExcept
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  app.enableCors();
+
   app.useGlobalFilters(new HttpExceptionFilter());
+
   await app.listen(process.env.API_PORT);
 }
 bootstrap();
