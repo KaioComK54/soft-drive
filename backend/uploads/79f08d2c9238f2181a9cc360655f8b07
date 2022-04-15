@@ -1,0 +1,33 @@
+PORT=6000
+
+DB_HOST=localhost
+DB_PORT=27017
+DB_NAME=maintainer-test
+
+PEPPER=b284a5055e9e60e7fbc42a00f1b0bffd23dh942g12v91abd16760548f0c799bc187a
+JWT_SECRET=028b5bb9f6f18d8681f5d0a5c7275e23e0ecd5cb3b95b1b6f567a5c87bc1b355
+SALT_ROUND=11 
+
+#COMMUNICATIONS_TOKEN=18b6b2f72d38d49c4250f0f1fd183aec97523d95
+COMMUNICATIONS_TOKEN=294278dff2ab6b82d24ad24175296b2bc7b9df7d
+COMMUNICATIONS_URL=https://apitest.communications.blesss.org
+#COMMUNICATIONS_URL=http://localhost:5005
+
+#USER_API_URL=https://apitest.users.blesss.org
+USER_API_URL=http://localhost:5001
+USERS_TOKEN=3d35af0c770cd0afc1bf05b0477f417f786bd736a0fa84ea6a86fc7107e80451
+#USERS_TOKEN=5e50f405ace6cbdf17379f4b9f2b0c9f4144c5e380ea0b9298cb02ebd8ffe511
+
+AUTHENTICATION_SERVER=https://api.authentications.blesss.org
+
+#PAYMENTS_API_URL=https://apitest.payments.blesss.org
+PAYMENTS_API_URL=http://localhost:5010
+PAYMENTS_TOKEN=5e50f405ace6cbdf17379f4b9f2b0c9f4144c5e380ea0b9298cb02ebd8ffe511
+PAYMENT_PROVIDER=pagarme 
+PAYMENTS_WEBHOOK_SECRET=fc820a27d564ce48d9def81b92e8ea3ef26eb06ab7bab29cfb26923f5707180a
+
+SENDER_NAME=contato
+WALLET_TAG=Sou Mantenedor
+LINK_RESET_PASSWORD:http://localhost
+
+MESSAGES_CONTEXTS=donation_created donation_deleted donation_updated donation_active donation_pending donation_canceled test_created test_deleted test_updated test_active test_pending test_canceled
