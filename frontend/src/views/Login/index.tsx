@@ -3,20 +3,33 @@ import { LoginContainer, LoginBox, Button } from "./styles";
 
 import Logo from "components/Logo";
 import Input from "components/Input";
-import { useState } from "react";
+
+import useLogin from "validations/useLogin";
+import useError from "validations/useError";
 
 const Login = () => {
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-
   const navigate = useNavigate();
 
-  const handleEmail = (value: string) => {
-    setEmail(value);
-  };
+  const { validateError } = useError();
 
-  const handlePassword = (value: string) => {
-    setPassword(value);
+  const {
+    validateData,
+    handleSubmit,
+    setEmail,
+    setPassword,
+    email,
+    password,
+    errors,
+  } = useLogin();
+
+  const submit = () => {
+    try {
+      validateData({ email, password });
+
+      handleSubmit({ email, password });
+    } catch (error: any) {
+      validateError(error);
+    }
   };
 
   return (
@@ -27,24 +40,32 @@ const Login = () => {
       <LoginBox>
         <Input
           name="email"
-          onChange={handleEmail}
-          errors={[]}
+          onChange={setEmail}
+          errors={errors}
           value={email}
           placeholder="Email"
+          type="text"
         />
         <Input
           name="password"
-          onChange={handlePassword}
-          errors={[]}
+          onChange={setPassword}
+          errors={errors}
           value={password}
           placeholder="Senha"
+          type="password"
         />
 
         <div className="button-container">
           <Button onClick={() => navigate("/registro")}>
             Criar uma nova conta
           </Button>
-          <Button className="primary">Entrar</Button>
+          <Button
+            className="primary"
+            disabled={email === "" || password === ""}
+            onClick={() => submit()}
+          >
+            Entrar
+          </Button>
         </div>
       </LoginBox>
     </LoginContainer>

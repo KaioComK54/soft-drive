@@ -4,7 +4,7 @@ const token = "any";
 
 const instance = axios.create({
   baseURL: "http://localhost:4000",
-  headers: { Authorization: `Basic ${token}` },
+  headers: { Authorization: `Bearer ${token}` },
 });
 
 export default instance;

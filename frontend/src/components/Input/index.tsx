@@ -6,9 +6,17 @@ interface props {
   name: string;
   placeholder: string;
   errors: string[];
+  type: string;
 }
 
-const Input = ({ value, onChange, name, placeholder, errors }: props) => {
+const Input = ({
+  value,
+  onChange,
+  name,
+  placeholder,
+  errors,
+  ...rest
+}: props) => {
   return (
     <InputBase
       value={value}
@@ -16,6 +24,8 @@ const Input = ({ value, onChange, name, placeholder, errors }: props) => {
       placeholder={placeholder}
       onChange={({ target }: any) => onChange(target.value)}
       className={errors.includes(name) && "error"}
+      autocomplete="off"
+      {...rest}
     />
   );
 };

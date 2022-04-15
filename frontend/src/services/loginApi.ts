@@ -5,7 +5,7 @@ export interface DataType {
   password: string;
 }
 
-const loginApi = (data: DataType) =>
-  axios.post("/login", { data }).then((response) => response);
+const loginApi = async (data: DataType) =>
+  await axios.post("/auth/signin", { ...data }).then((response) => response);
 
 export default loginApi;

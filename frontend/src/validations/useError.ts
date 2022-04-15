@@ -1,4 +1,4 @@
-import FormError from "errors/FormError";
+import FormError from "errors/formError";
 import FileError from "errors/fileError";
 import { useAlert } from "react-alert";
 
