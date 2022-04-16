@@ -57,10 +57,14 @@ export const Button = styled.button`
     padding: 12px 36px;
   }
 
-  &.secondary {
-  }
-
   :hover {
     opacity: 0.7;
+  }
+
+  :disabled {
+    background-color: #ccc;
+    color: #333;
+    cursor: auto;
+    opacity: 1;
   }
 `;

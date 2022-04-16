@@ -1,4 +1,4 @@
-import FormError from "errors/formError";
+import AuthError from "errors/authError";
 import FileError from "errors/fileError";
 import { useAlert } from "react-alert";
 
@@ -10,7 +10,7 @@ const useError = () => {
       alert.error(error.message);
     }
 
-    if (error instanceof FormError) {
+    if (error instanceof AuthError) {
       alert.error(error.message);
     }
   };

@@ -23,7 +23,7 @@ const Input = ({
       name={name}
       placeholder={placeholder}
       onChange={({ target }: any) => onChange(target.value)}
-      className={errors.includes(name) && "error"}
+      className={errors.includes(name) ? "error" : ""}
       autocomplete="off"
       {...rest}
     />

@@ -6,6 +6,9 @@ export interface DataType {
 }
 
 const loginApi = async (data: DataType) =>
-  await axios.post("/auth/signin", { ...data }).then((response) => response);
+  await axios
+    .post("/auth/signin", { ...data })
+    .then((response) => response)
+    .catch((error) => error.response.status);
 
 export default loginApi;

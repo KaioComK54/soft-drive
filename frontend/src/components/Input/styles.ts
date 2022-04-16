@@ -12,7 +12,7 @@ export const InputBase = styled.input`
   margin-bottom: 24px;
   background-color: rgba(196, 196, 200, 0.3);
 
-  .error {
+  &.error {
     border: 1px solid ${colors.error};
   }
 `;

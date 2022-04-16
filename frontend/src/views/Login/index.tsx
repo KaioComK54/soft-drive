@@ -22,11 +22,11 @@ const Login = () => {
     errors,
   } = useLogin();
 
-  const submit = () => {
+  const submit = async () => {
     try {
       validateData({ email, password });
 
-      handleSubmit({ email, password });
+      await handleSubmit({ email, password });
     } catch (error: any) {
       validateError(error);
     }

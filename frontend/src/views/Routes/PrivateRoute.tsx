@@ -9,7 +9,9 @@ export type PrivateRouteProps = {
 const isAuthenticated = () => {
   const token = getAuthToken();
 
-  return !!token;
+  if (!token) return false;
+
+  return true;
 };
 
 export default function PrivateRoute({
