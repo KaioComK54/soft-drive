@@ -1,13 +1,19 @@
 import axios from "./api.cofig";
 
-interface DataType {
+export interface DataTypeComplete {
   firstName: string;
   lastName: string;
   email: string;
   password: string;
+  confirmPassword: string;
 }
 
-const registerUser = async (data: DataType) =>
-  await axios.post("/user", { ...data }).then((response) => response);
+export type DataType = Omit<DataTypeComplete, "confirmPassword">;
 
-export { registerUser };
+const registerApi = async (data: DataType) =>
+  await axios
+    .post("/user", { ...data })
+    .then((response) => response)
+    .catch((error) => error.response.status);
+
+export default registerApi;

@@ -68,3 +68,14 @@ export const Button = styled.button`
     opacity: 1;
   }
 `;
+
+export const ErrorBox = styled.div`
+  width: 100%;
+  padding: 16px 8px;
+  background-color: #f8a5c2;
+  color: #d63031;
+  border: 1px solid #d63031;
+  border-radius: 8px;
+  text-align: center;
+  margin-bottom: 16px;
+`;

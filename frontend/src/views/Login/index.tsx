@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { LoginContainer, LoginBox, Button } from "./styles";
+import { LoginContainer, LoginBox, Button, ErrorBox } from "./styles";
 
 import Logo from "components/Logo";
 import Input from "components/Input";
@@ -20,6 +20,8 @@ const Login = () => {
     email,
     password,
     errors,
+    errorMessage,
+    emptyFields,
   } = useLogin();
 
   const submit = async () => {
@@ -55,13 +57,15 @@ const Login = () => {
           type="password"
         />
 
+        {errorMessage && <ErrorBox>{errorMessage}</ErrorBox>}
+
         <div className="button-container">
           <Button onClick={() => navigate("/registro")}>
             Criar uma nova conta
           </Button>
           <Button
             className="primary"
-            disabled={email === "" || password === ""}
+            disabled={emptyFields()}
             onClick={() => submit()}
           >
             Entrar

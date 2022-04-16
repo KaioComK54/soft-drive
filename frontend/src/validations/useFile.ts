@@ -26,14 +26,11 @@ const useFile = () => {
 
     if (!fileName) throw new FileError(fileErrorsMessage.nameError);
 
-    const specialCaracteres = fileNameBlackList.special;
-    const directorySnnipets = fileNameBlackList.directory;
-
-    const includesSpecials = specialCaracteres
+    const includesSpecials = fileNameBlackList.special
       .split("")
       .some((caractere) => fileName.includes(caractere));
 
-    const includesDirectory = directorySnnipets.some((caractere) =>
+    const includesDirectory = fileNameBlackList.directory.some((caractere) =>
       fileName.includes(caractere)
     );
 

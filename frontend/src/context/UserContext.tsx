@@ -9,6 +9,7 @@ type UserData = {
   id: string;
   lastName: string;
   updatedAt: string;
+  fetchUserData: Function;
 };
 
 const initial = {
@@ -18,6 +19,7 @@ const initial = {
   id: "",
   lastName: "",
   updatedAt: "",
+  fetchUserData: () => {},
 };
 
 const UserContext = createContext<UserData>(initial);
@@ -27,10 +29,6 @@ const UserContexProvider: React.FC = ({ children }) => {
   const [userDataFetch, userDataRequest] = useAsyncFn(getUserInfo);
 
   useEffect(() => {
-    userDataRequest();
-  }, []);
-
-  useEffect(() => {
     if (userDataFetch.loading) return;
 
     if (userDataFetch.value?.data) {
@@ -38,10 +36,13 @@ const UserContexProvider: React.FC = ({ children }) => {
     }
   }, [userDataFetch]);
 
+  const fetchUserData = async () => await userDataRequest();
+
   return (
     <UserContext.Provider
       value={{
         ...userData,
+        fetchUserData,
       }}
     >
       {children}

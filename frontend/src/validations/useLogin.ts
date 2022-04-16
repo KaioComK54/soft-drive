@@ -9,6 +9,8 @@ const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 const useLogin = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+
+  const [errorMessage, setErrorMessage] = useState<string>("");
   const [errors, setErrors] = useState<string[]>([]);
 
   const navigate = useNavigate();
@@ -21,31 +23,32 @@ const useLogin = () => {
     setPassword(value);
   };
 
-  const removeErrorFromArray = (error: string) => {
-    const index = errors.indexOf(error);
-    index > -1 && setErrors(errors.slice(index, 1));
-  };
-
   const validateEmail = (email: string) => {
-    removeErrorFromArray("email");
-
     const emailIsValid = emailRegex.test(email);
 
     if (!emailIsValid) {
+      setErrorMessage("Email inválido!");
       setErrors((errors) => [...errors, "email"]);
       throw new Error();
     }
   };
 
   const validatePassword = (password: string) => {
-    removeErrorFromArray("password");
-
-    if (!password) {
+    if (password.length < 6) {
+      setErrorMessage("A senha deve ter no mínimo 6 dígitos!");
       setErrors((errors) => [...errors, "password"]);
+      throw new Error();
     }
   };
 
+  const emptyFields = () => {
+    if (email === "" || password === "") return true;
+    return false;
+  };
+
   const validateData = ({ email, password }: DataType) => {
+    setErrorMessage("");
+    setErrors([]);
     validateEmail(email);
     validatePassword(password);
   };
@@ -62,11 +65,13 @@ const useLogin = () => {
   return {
     validateData,
     handleSubmit,
+    errorMessage,
     errors,
     email,
     password,
     setEmail: handleEmail,
     setPassword: handlePassword,
+    emptyFields,
   };
 };
 
