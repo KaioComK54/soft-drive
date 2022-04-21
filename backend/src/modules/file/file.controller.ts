@@ -60,6 +60,7 @@ export class FileController {
     );
 
     res.set({
+      FileName: name,
       'Content-Disposition': `attachment; filename="${name}"`,
     });
 

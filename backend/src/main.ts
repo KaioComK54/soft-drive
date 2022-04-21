@@ -10,7 +10,7 @@ async function bootstrap() {
   app.enableCors({
     origin: '*',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-    exposedHeaders: 'Content-Disposition',
+    exposedHeaders: ['Content-Disposition', 'FileName'],
   });
 
   app.useGlobalFilters(new HttpExceptionFilter(logger));
