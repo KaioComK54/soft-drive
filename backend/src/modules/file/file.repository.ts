@@ -17,6 +17,10 @@ export class FileRepository {
     return await this._fileModel.find({ userId: new Types.ObjectId(id) });
   }
 
+  async findByTag(tag: string): Promise<File[]> {
+    return await this._fileModel.find({ tag });
+  }
+
   async create(file: File): Promise<File> {
     const newFile = new this._fileModel(file);
 

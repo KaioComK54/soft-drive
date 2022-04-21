@@ -22,6 +22,11 @@ export class File {
   @Prop({
     required: true,
   })
+  tag: string;
+
+  @Prop({
+    required: true,
+  })
   type: string;
 
   @Prop({

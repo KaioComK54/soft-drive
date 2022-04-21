@@ -20,12 +20,26 @@ export class FileService {
   async createFileRecord(body: FileDto): Promise<FileResponseDto> {
     const entity = this._fileMapper.toEntity(body);
 
-    const { size, userId } = body;
+    const { size, userId, name } = body;
 
-    const isStorageFull = await this.calculateSpentStorageLimit(userId, size);
+    const existingFiles = await this._fileRepository.findByUserId(userId);
+
+    const isStorageFull = await this.calculateSpentStorageLimit(
+      userId,
+      size,
+      existingFiles,
+    );
 
     if (isStorageFull)
       throw new UnprocessableEntityException('Storage limit has been reached');
+
+    const numOfDuplicatedFiles = await this.checkForDuplicateFiles(
+      name,
+      existingFiles,
+    );
+
+    if (numOfDuplicatedFiles > 0)
+      entity.name = `${name} (${numOfDuplicatedFiles + 1})`;
 
     const file = await this._fileRepository.create(entity);
 
@@ -49,11 +63,25 @@ export class FileService {
   private async calculateSpentStorageLimit(
     userId: string,
     desiredStorageSpace: number,
+    existingFiles: File[] = [],
   ): Promise<boolean> {
-    const files = await this._fileRepository.findByUserId(userId);
+    const files = existingFiles.length
+      ? existingFiles.filter((file) => file.userId.toString() == userId)
+      : await this._fileRepository.findByUserId(userId);
 
     const spentStorage = files.reduce((acc, file) => acc + file.size, 0);
 
     return spentStorage + desiredStorageSpace > this._limitStorage;
+  }
+
+  private async checkForDuplicateFiles(
+    tag: string,
+    existingFiles: File[] = [],
+  ): Promise<number> {
+    const files = existingFiles.length
+      ? existingFiles.filter((file) => file.tag === tag)
+      : await this._fileRepository.findByTag(tag);
+
+    return files.length;
   }
 }

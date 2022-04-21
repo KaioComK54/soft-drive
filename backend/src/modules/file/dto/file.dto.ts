@@ -17,6 +17,10 @@ export class FileDto {
 
   @IsNotEmpty()
   @IsString()
+  tag: string;
+
+  @IsNotEmpty()
+  @IsString()
   type: string;
 
   @IsNotEmpty()

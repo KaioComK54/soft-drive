@@ -8,6 +8,7 @@ export class FileMapper {
     const entity = new File();
 
     entity.name = entityDto.name;
+    entity.tag = entityDto.tag;
     entity.userId = entityDto.userId;
     entity.type = entityDto.type;
     entity.path = entityDto.path;

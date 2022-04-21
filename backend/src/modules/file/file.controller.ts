@@ -31,9 +31,12 @@ export class FileController {
   async uploadFile(@Req() req: any, @UploadedFile() file: Express.Multer.File) {
     if (!file) throw new BadRequestException('No valid files were provided');
 
+    const fileName = file.originalname.split('.').slice(-2, -1).join('');
+
     const fileForm = {
       userId: req.user.id,
-      name: file.originalname,
+      name: fileName,
+      tag: fileName,
       type: file.mimetype,
       path: file.path,
       size: file.size,
