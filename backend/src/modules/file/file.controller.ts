@@ -59,7 +59,9 @@ export class FileController {
       req.user?.id,
     );
 
-    res.set({ FileName: name });
+    res.set({
+      'Content-Disposition': `attachment; filename="${name}"`,
+    });
 
     return file;
   }
