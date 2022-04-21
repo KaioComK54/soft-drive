@@ -1,36 +1,26 @@
-import React from "react";
 import Subheader from "components/Subheader";
 import Filerender from "components/Filerender";
 
-import { Container, FileContainer } from "./styles";
+import { Container, FileContainer, EmptyFiles } from "./styles";
+import Loader from "components/Loader";
 
-const files = [
-  {
-    type: "txt",
-    name: "Arquivo1.txt",
-  },
-  {
-    type: "pdf",
-    name: "Arquivo2.pdf",
-  },
-  {
-    type: "txt",
-    name: "Arquivo3.txt",
-  },
-  {
-    type: "pdf",
-    name: "Arquivo4.pdf",
-  },
-];
+import useFileMethods from "./hooks/useFileMethods";
 
 const Drive = () => {
+  const { files, loading } = useFileMethods();
+
   return (
     <Container>
       <Subheader title="Meu drive" />
+
       <FileContainer>
-        {files.map((file) => (
-          <Filerender key={file.name} file={file} />
-        ))}
+        {loading ? (
+          <Loader />
+        ) : files.length ? (
+          files.map((file) => <Filerender key={file.id} file={file} />)
+        ) : (
+          <EmptyFiles />
+        )}
       </FileContainer>
     </Container>
   );

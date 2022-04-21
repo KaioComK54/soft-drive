@@ -1,9 +1,13 @@
-const setAuthToken = (value: string) => {
-  localStorage.setItem("accessToken", value);
+const setAuthToken = async (value: string) => {
+  await localStorage.setItem("accessToken", value);
 };
 
 const getAuthToken = () => {
   return localStorage.getItem("accessToken");
 };
 
-export { setAuthToken, getAuthToken };
+const removeAuthToken = () => {
+  localStorage.removeItem("accessToken");
+};
+
+export { setAuthToken, getAuthToken, removeAuthToken };

@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useAlert } from "react-alert";
+import { sendUserFile } from "services/fileApi";
 
 import FileError from "errors/fileError";
 
@@ -17,7 +19,8 @@ const fileNameBlackList = {
 };
 
 const useFile = () => {
-  const [file, setFile] = useState();
+  const [file, setFile] = useState<any>();
+  const alert = useAlert();
 
   const validateName = (file: File): never | any => {
     const { name } = file;
@@ -58,6 +61,17 @@ const useFile = () => {
     if (!isValidFileSize) throw new FileError(fileErrorsMessage.sizeError);
   };
 
+  const handleSubmit = async () => {
+    const data = new FormData();
+    data.append("file", file);
+
+    const result = await sendUserFile(data);
+    if (result === 500 || result === 400)
+      throw new FileError("Erro ao enviar o arquivo!"); //Validar
+
+    alert.success("Arquivo enviado com sucesso!");
+  };
+
   const validadeFile = (file: File) => {
     validateName(file);
     validateType(file);
@@ -70,6 +84,7 @@ const useFile = () => {
     validadeFile,
     fileTypes,
     maxSize,
+    handleSubmit,
   };
 };
 

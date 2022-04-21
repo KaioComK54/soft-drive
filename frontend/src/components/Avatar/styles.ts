@@ -7,7 +7,12 @@ export const Container = styled.header`
   display: flex;
   justify-content: center;
   align-items: center;
-  cursor: pointer;
+
+  button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+  }
 
   img {
     width: 40px;

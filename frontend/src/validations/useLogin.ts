@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import loginApi, { DataType } from "services/loginApi";
-import { setAuthToken } from "utils/useAuth";
+import { setAuthToken, getAuthToken } from "utils/useAuth";
 import AuthError from "errors/authError";
 
 const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
@@ -56,10 +56,16 @@ const useLogin = () => {
   const handleSubmit = async (data: DataType) => {
     const result = await loginApi(data);
 
-    if (result === 401) throw new AuthError("Erro na autenticação!");
+    if (result === 401 || result === 400)
+      throw new AuthError("Erro na autenticação!");
 
-    setAuthToken(result?.data?.accessToken);
-    navigate("/meu-drive");
+    await setAuthToken(result?.data?.accessToken);
+
+    const token = getAuthToken();
+
+    if (token) {
+      navigate("/meu-drive");
+    }
   };
 
   return {

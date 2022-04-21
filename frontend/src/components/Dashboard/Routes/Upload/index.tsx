@@ -11,7 +11,7 @@ import { useRef } from "react";
 
 const Upload = () => {
   const inputRef = useRef<any>();
-  const { file, setFile, validadeFile } = usefile();
+  const { file, setFile, validadeFile, handleSubmit } = usefile();
 
   const { validateError } = useError();
 
@@ -25,7 +25,13 @@ const Upload = () => {
     }
   };
 
-  const handleSubmitFile = () => {};
+  const submit = () => {
+    try {
+      handleSubmit();
+    } catch (error: any) {
+      validateError(error);
+    }
+  };
 
   return (
     <Container>
@@ -43,11 +49,7 @@ const Upload = () => {
         onClick={() => !file && inputRef?.current?.click()}
       >
         <FileStatus file={file} />
-        <ActionButtons
-          file={file}
-          setFile={setFile}
-          submitFile={handleSubmitFile}
-        />
+        <ActionButtons file={file} setFile={setFile} submitFile={submit} />
       </FileUploaderContainer>
     </Container>
   );

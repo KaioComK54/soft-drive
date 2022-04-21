@@ -23,3 +23,13 @@ export const FileContainer = styled.div`
     justify-content: center;
   }
 `;
+
+export const EmptyFiles = styled.h5`
+  font-size: 18px;
+  font-weight: 400;
+  color: ${colors.textColor};
+
+  ::after {
+    content: "Você ainda não enviou nenhum arquivo!";
+  }
+`;
