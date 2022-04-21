@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useAlert } from "react-alert";
-import { sendUserFile } from "services/fileApi";
+import { sendUserFile, getAFile, deleteAFile } from "services/fileApi";
+import useFileMethods from "components/Dashboard/Routes/Drive/hooks/useFileMethods";
 
 import FileError from "errors/fileError";
 
@@ -21,6 +22,27 @@ const fileNameBlackList = {
 const useFile = () => {
   const [file, setFile] = useState<any>();
   const alert = useAlert();
+  const { fetchUserFilesRequest } = useFileMethods();
+
+  const handleSubmit = async () => {
+    const data = new FormData();
+    data.append("file", file);
+
+    const result = await sendUserFile(data);
+
+    if (result instanceof Error)
+      throw new FileError("Erro ao enviar o arquivo!");
+
+    setFile(null);
+    alert.success("Arquivo enviado com sucesso!");
+  };
+
+  const handleDownload = async (id: string) => await getAFile(id);
+
+  const handleDelete = async (id: string) => {
+    await deleteAFile(id);
+    fetchUserFilesRequest();
+  };
 
   const validateName = (file: File): never | any => {
     const { name } = file;
@@ -61,17 +83,6 @@ const useFile = () => {
     if (!isValidFileSize) throw new FileError(fileErrorsMessage.sizeError);
   };
 
-  const handleSubmit = async () => {
-    const data = new FormData();
-    data.append("file", file);
-
-    const result = await sendUserFile(data);
-    if (result === 500 || result === 400)
-      throw new FileError("Erro ao enviar o arquivo!"); //Validar
-
-    alert.success("Arquivo enviado com sucesso!");
-  };
-
   const validadeFile = (file: File) => {
     validateName(file);
     validateType(file);
@@ -85,6 +96,8 @@ const useFile = () => {
     fileTypes,
     maxSize,
     handleSubmit,
+    handleDownload,
+    handleDelete,
   };
 };
 

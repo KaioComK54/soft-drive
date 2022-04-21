@@ -25,9 +25,9 @@ const Upload = () => {
     }
   };
 
-  const submit = () => {
+  const submit = async () => {
     try {
-      handleSubmit();
+      await handleSubmit();
     } catch (error: any) {
       validateError(error);
     }

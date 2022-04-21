@@ -13,6 +13,15 @@ export const FileBox = styled.div`
 
   cursor: pointer;
 
+  button {
+    width: 150px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 400;
+  }
+
   img {
     width: 100px;
     height: 100px;
@@ -21,7 +30,9 @@ export const FileBox = styled.div`
   p {
     margin-top: 16px;
     color: ${colors.textColor};
-    font-weight: 400;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   &:hover {

@@ -29,6 +29,7 @@ const useFileMethods = () => {
 
   return {
     files,
+    fetchUserFilesRequest,
     loading: fetchUserFiles.loading,
   };
 };
