@@ -12,6 +12,9 @@ const FileEmpty = () => {
         <p className="guide-item">
           * O tamanho do arquivo deve ser no máximo 2 MB.
         </p>
+        <p className="guide-item">
+          * O nome do arquivo não deve ter caracteres especiais.
+        </p>
       </div>
     </Container>
   );

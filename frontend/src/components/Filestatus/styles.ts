@@ -14,6 +14,7 @@ export const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
 `;
 
 export const Title = styled.h3`
@@ -35,4 +36,16 @@ export const Title = styled.h3`
       text-align: center;
     }
   }
+`;
+
+export const ErrorBox = styled.div`
+  max-width: 400px;
+  padding: 16px 8px;
+  background-color: #f8a5c2;
+  color: #d63031;
+  border: 1px solid #d63031;
+  border-radius: 8px;
+  text-align: center;
+  margin-bottom: 16px;
+  margin-top: 16px;
 `;

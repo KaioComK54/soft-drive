@@ -4,6 +4,8 @@ import { colors } from "styles/_global.style";
 export const Container = styled.div`
   display: flex;
   align-items: center;
+  border-radius: 16px;
+  padding: 8px;
 
   img {
     height: 131px;
