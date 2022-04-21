@@ -2,25 +2,24 @@ import {
   Controller,
   Post,
   Get,
+  Delete,
   UploadedFile,
   UseInterceptors,
   UseGuards,
   Req,
   Param,
+  HttpCode,
   StreamableFile,
   ValidationPipe,
-  UnprocessableEntityException,
   BadRequestException,
+  Res,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { createReadStream, readFile } from 'fs';
 import { Express } from 'express';
-import { promisify } from 'util';
 import { JwtAuthGuard } from '../shared/jwt/jwt.guard';
 import { FileParamDto } from './dto/file.dto';
 import { FileService } from './file.service';
 
-const readFileAsync = promisify(readFile);
 @Controller('file')
 @UseGuards(JwtAuthGuard)
 export class FileController {
@@ -31,12 +30,10 @@ export class FileController {
   async uploadFile(@Req() req: any, @UploadedFile() file: Express.Multer.File) {
     if (!file) throw new BadRequestException('No valid files were provided');
 
-    const fileName = file.originalname.split('.').slice(-2, -1).join('');
-
     const fileForm = {
-      userId: req.user.id,
-      name: fileName,
-      tag: fileName,
+      userId: req.user?.id,
+      name: file.originalname?.split('.').slice(-2, -1).join(''),
+      tag: file.originalname,
       type: file.mimetype,
       path: file.path,
       size: file.size,
@@ -47,28 +44,33 @@ export class FileController {
 
   @Get()
   async getFiles(@Req() req: any) {
-    const { id } = req.user;
-    return this._fileService.getFilesByUserId(id);
+    return this._fileService.getFilesByUserId(req.user?.id);
   }
 
   @Get(':id')
   async getFileById(
     @Req() req: any,
+    @Res({ passthrough: true }) res: any,
     @Param(new ValidationPipe({ transform: true, whitelist: true }))
     param: FileParamDto,
   ): Promise<StreamableFile> {
-    const file = await this._fileService.getFileById(param.id, req.user.id);
+    const { file, name } = await this._fileService.streamFile(
+      param.id,
+      req.user?.id,
+    );
 
-    const fileExists = await readFileAsync(file.path).catch(() => null);
+    res.set({ FileName: name });
 
-    if (!fileExists) {
-      throw new UnprocessableEntityException(
-        'Unable to make the file available',
-      );
-    }
+    return file;
+  }
 
-    const streamebleFile = createReadStream(file.path);
-
-    return new StreamableFile(streamebleFile);
+  @Delete(':id')
+  @HttpCode(204)
+  async deleteFileById(
+    @Req() req: any,
+    @Param(new ValidationPipe({ transform: true, whitelist: true }))
+    param: FileParamDto,
+  ) {
+    return this._fileService.deleteFileById(param.id, req.user?.id);
   }
 }

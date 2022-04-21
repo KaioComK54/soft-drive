@@ -8,14 +8,19 @@ import {
 import { Request, Response } from 'express';
 import { Error as MongooseError } from 'mongoose';
 import { MongoServerError } from 'mongoose/node_modules/mongodb';
+import { ApiLogger } from '../logger/logger.service';
 
 @Catch()
 @Catch(HttpException)
 export class HttpExceptionFilter implements ExceptionFilter {
+  constructor(private readonly _logger: ApiLogger) {}
+
   catch(exception: HttpException, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
     const request = ctx.getRequest<Request>();
+
+    this._logger.error(exception);
 
     let message = 'Internal Server Error';
     let name = 'HttpException';

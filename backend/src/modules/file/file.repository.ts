@@ -26,4 +26,16 @@ export class FileRepository {
 
     return newFile.save();
   }
+
+  async deleteById(id: string, userId: string): Promise<File> {
+    return this._fileModel.findOneAndDelete(
+      {
+        _id: new Types.ObjectId(id),
+        userId: new Types.ObjectId(userId),
+      },
+      {
+        new: true,
+      },
+    );
+  }
 }
