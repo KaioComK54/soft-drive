@@ -1,8 +1,12 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { UserRepository } from './user.repository';
 import { UserMapper } from './dto/user.mapper';
-import { UserDto, UserResponseDto } from './dto/user.dto';
+import { UserDto, UserResponseDto, PasswordChangeDto } from './dto/user.dto';
 
 @Injectable()
 export class UserService {
@@ -27,6 +31,22 @@ export class UserService {
     if (!user) throw new NotFoundException('User not found');
 
     return this._userMapper.toDto(user);
+  }
+
+  async changePassword(body: PasswordChangeDto): Promise<void> {
+    const { email, oldPassword, newPassword } = body;
+
+    const { isMatch: isOldPasswordValid } = await this.verifyPassword(
+      email,
+      oldPassword,
+    );
+
+    if (!isOldPasswordValid)
+      throw new BadRequestException('Invalid credentials');
+
+    const password = await this.encryptPassword(newPassword);
+
+    await this._userRepository.updateByEmail(email, { password });
   }
 
   async verifyPassword(

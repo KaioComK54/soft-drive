@@ -19,4 +19,12 @@ export class UserRepository {
 
     return newUser.save();
   }
+
+  async updateById(id: string, body: Record<string, any>): Promise<User> {
+    return this._userModel.findOneAndUpdate({ _id: id }, body, { new: true });
+  }
+
+  async updateByEmail(email: string, body: Record<string, any>): Promise<User> {
+    return this._userModel.findOneAndUpdate({ email }, body, { new: true });
+  }
 }

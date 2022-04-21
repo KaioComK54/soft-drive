@@ -2,14 +2,16 @@ import {
   Req,
   Controller,
   Post,
+  Patch,
   Get,
   Body,
   ValidationPipe,
   UseGuards,
+  HttpCode,
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../shared/jwt/jwt.guard';
 import { UserService } from './user.service';
-import { UserDto } from './dto/user.dto';
+import { UserDto, UserResponseDto, PasswordChangeDto } from './dto/user.dto';
 
 @Controller('user')
 export class UserController {
@@ -25,7 +27,19 @@ export class UserController {
 
   @UseGuards(JwtAuthGuard)
   @Get('me')
-  async getPersonalData(@Req() req: any): Promise<any> {
+  async getPersonalData(@Req() req: any): Promise<UserResponseDto> {
     return this._userService.getUserById(req.user.id);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Patch('change-password')
+  @HttpCode(204)
+  async changePassword(
+    @Req() req: any,
+    @Body(new ValidationPipe({ transform: true, whitelist: true }))
+    body: PasswordChangeDto,
+  ): Promise<void> {
+    body.email = req.user?.email;
+    await this._userService.changePassword(body);
   }
 }

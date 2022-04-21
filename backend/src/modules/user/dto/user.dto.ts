@@ -4,6 +4,7 @@ import {
   IsString,
   IsDate,
   IsMongoId,
+  IsOptional,
 } from 'class-validator';
 
 export class UserDto {
@@ -22,6 +23,20 @@ export class UserDto {
   @IsNotEmpty()
   @IsString()
   password: string;
+}
+
+export class PasswordChangeDto {
+  @IsOptional()
+  @IsEmail()
+  email: string;
+
+  @IsNotEmpty()
+  @IsString()
+  oldPassword: string;
+
+  @IsNotEmpty()
+  @IsString()
+  newPassword: string;
 }
 
 export class UserResponseDto {
