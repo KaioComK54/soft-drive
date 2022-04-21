@@ -9,14 +9,18 @@ import {
   Param,
   StreamableFile,
   ValidationPipe,
+  UnprocessableEntityException,
+  BadRequestException,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { createReadStream } from 'fs';
+import { createReadStream, readFile } from 'fs';
 import { Express } from 'express';
+import { promisify } from 'util';
 import { JwtAuthGuard } from '../shared/jwt/jwt.guard';
 import { FileParamDto } from './dto/file.dto';
 import { FileService } from './file.service';
 
+const readFileAsync = promisify(readFile);
 @Controller('file')
 @UseGuards(JwtAuthGuard)
 export class FileController {
@@ -25,6 +29,8 @@ export class FileController {
   @Post('upload')
   @UseInterceptors(FileInterceptor('file'))
   async uploadFile(@Req() req: any, @UploadedFile() file: Express.Multer.File) {
+    if (!file) throw new BadRequestException('No valid files were provided');
+
     const fileForm = {
       userId: req.user.id,
       name: file.originalname,
@@ -49,6 +55,14 @@ export class FileController {
     param: FileParamDto,
   ): Promise<StreamableFile> {
     const file = await this._fileService.getFileById(param.id, req.user.id);
+
+    const fileExists = await readFileAsync(file.path).catch(() => null);
+
+    if (!fileExists) {
+      throw new UnprocessableEntityException(
+        'Unable to make the file available',
+      );
+    }
 
     const streamebleFile = createReadStream(file.path);
 

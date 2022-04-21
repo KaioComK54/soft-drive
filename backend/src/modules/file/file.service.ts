@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnprocessableEntityException,
+} from '@nestjs/common';
 import { FileDto, FileResponseDto } from './dto/file.dto';
 import { FileMapper } from './dto/file.mapper';
 import { FileRepository } from './file.repository';
@@ -6,6 +10,8 @@ import { File } from './file.schema';
 
 @Injectable()
 export class FileService {
+  private readonly _limitStorage: number = parseInt(process.env.STORAGE_LIMIT);
+
   constructor(
     private readonly _fileRepository: FileRepository,
     private readonly _fileMapper: FileMapper,
@@ -13,6 +19,13 @@ export class FileService {
 
   async createFileRecord(body: FileDto): Promise<FileResponseDto> {
     const entity = this._fileMapper.toEntity(body);
+
+    const { size, userId } = body;
+
+    const isStorageFull = await this.calculateSpentStorageLimit(userId, size);
+
+    if (isStorageFull)
+      throw new UnprocessableEntityException('Storage limit has been reached');
 
     const file = await this._fileRepository.create(entity);
 
@@ -31,5 +44,16 @@ export class FileService {
     if (!file) throw new NotFoundException('File not found');
 
     return file;
+  }
+
+  private async calculateSpentStorageLimit(
+    userId: string,
+    desiredStorageSpace: number,
+  ): Promise<boolean> {
+    const files = await this._fileRepository.findByUserId(userId);
+
+    const spentStorage = files.reduce((acc, file) => acc + file.size, 0);
+
+    return spentStorage + desiredStorageSpace > this._limitStorage;
   }
 }
