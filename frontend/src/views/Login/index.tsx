@@ -46,7 +46,6 @@ const Login = () => {
           errors={errors}
           value={email}
           placeholder="Email"
-          type="text"
         />
         <Input
           name="password"

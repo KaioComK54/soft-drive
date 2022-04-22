@@ -1,19 +1,21 @@
 import Popover from "@mui/material/Popover";
 import MenuItem from "@mui/material/MenuItem";
 import useRedirectToLogin from "utils/useRedirectLogin";
-import { useNavigate } from "react-router-dom";
 
 interface Props {
   open: boolean;
   close: any;
   reference: any;
+  openProfileModal: Function;
 }
 
-const Menu = ({ open, close, reference }: Props) => {
-  const navigate = useNavigate();
+const Menu = ({ open, close, reference, openProfileModal }: Props) => {
   const { redirectToLogin } = useRedirectToLogin();
 
-  const profile = () => navigate("/perfil");
+  const profile = () => {
+    close();
+    openProfileModal();
+  };
 
   const logout = () => redirectToLogin();
 
