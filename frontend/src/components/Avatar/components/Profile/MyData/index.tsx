@@ -10,9 +10,10 @@ import useError from "validations/useError";
 
 interface Props {
   value: number;
+  handleClose: Function;
 }
 
-const MyData = ({ value }: Props) => {
+const MyData = ({ value, handleClose }: Props) => {
   const user = useContext(UserContext);
 
   const {
@@ -31,6 +32,7 @@ const MyData = ({ value }: Props) => {
       validateData({ firstName, lastName });
 
       await handleSubmitData({ firstName, lastName });
+      handleClose();
     } catch (error: any) {
       validateError(error);
     }
@@ -65,7 +67,6 @@ const MyData = ({ value }: Props) => {
             errors={errors}
             value={firstName}
             placeholder="Nome"
-            disabled={true}
           />
           <Input
             name="lastName"
@@ -73,7 +74,6 @@ const MyData = ({ value }: Props) => {
             errors={errors}
             value={lastName}
             placeholder="Sobrenome"
-            disabled={true}
           />
           <div className="btn-container">
             <Button

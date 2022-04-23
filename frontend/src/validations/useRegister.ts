@@ -11,6 +11,9 @@ const nameBlackList = {
   directory: ["../", "./", "~/", "~"],
 };
 
+const passwordRegex =
+  /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
+
 const useRegister = () => {
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
@@ -71,14 +74,26 @@ const useRegister = () => {
   };
 
   const validatePassword = (password: string, confirmPassword: string) => {
-    if (password.length < 6 || confirmPassword.length < 6) {
-      setErrorMessage("As senhas devem ter no mínimo 6 dígitos!");
+    if (password !== confirmPassword) {
+      setErrorMessage("As senhas não coencidem!");
       setErrors((errors) => [...errors, "password", "confirmPassword"]);
       throw new Error();
     }
 
-    if (password !== confirmPassword) {
-      setErrorMessage("As senhas não coencidem!");
+    if (password.length < 8) {
+      setErrorMessage("As senhas devem ter no mínimo 8 dígitos!");
+      setErrors((errors) => [...errors, "password", "confirmPassword"]);
+      throw new Error();
+    }
+
+    if (!passwordRegex.test(password)) {
+      setErrorMessage(
+        `A senha deve possuir pelo menos: 
+         1 caractere minúsculo, 
+         1 caractere maiúsculo, 
+         1 dígito numérico, 
+         1 dígito especial.`
+      );
       setErrors((errors) => [...errors, "password", "confirmPassword"]);
       throw new Error();
     }

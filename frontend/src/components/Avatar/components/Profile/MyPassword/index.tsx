@@ -6,9 +6,10 @@ import useError from "validations/useError";
 
 interface Props {
   value: number;
+  handleClose: Function;
 }
 
-const MyPassword = ({ value }: Props) => {
+const MyPassword = ({ value, handleClose }: Props) => {
   const {
     oldPassword,
     newPassword,
@@ -26,6 +27,7 @@ const MyPassword = ({ value }: Props) => {
       validatePasswords({ oldPassword, newPassword });
 
       await handleSubmitPassword({ oldPassword, newPassword });
+      handleClose();
     } catch (error: any) {
       validateError(error);
     }

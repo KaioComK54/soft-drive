@@ -31,6 +31,16 @@ const saveUserData = async (data: IMyData) =>
     .then((response) => response)
     .catch((error) => error);
 
+const saveUserProfile = async (data: IMyData) =>
+  await axios
+    .patch("/user/profile", data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+    })
+    .then((response) => response)
+    .catch((error) => error.response.status);
+
 const saveUserPassword = async (data: IMyPassword) =>
   await axios
     .patch("/user/change-password", data, {
@@ -41,4 +51,4 @@ const saveUserPassword = async (data: IMyPassword) =>
     .then((response) => response)
     .catch((error) => error.response.status);
 
-export { getUserInfo, saveUserData, saveUserPassword };
+export { getUserInfo, saveUserData, saveUserProfile, saveUserPassword };
