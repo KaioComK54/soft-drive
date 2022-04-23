@@ -76,4 +76,11 @@ export class UserMock {
   static mockId(): string {
     return userExampleValues.id;
   }
+
+  static mockPasswordVerification(isMatch = true): Record<string, any> {
+    return {
+      isMatch,
+      user: this.mockUser(),
+    };
+  }
 }

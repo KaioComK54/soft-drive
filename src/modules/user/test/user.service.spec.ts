@@ -134,10 +134,11 @@ describe('UserService', () => {
       const body = UserMock.mockPasswordChangeDto();
       const user = UserMock.mockUser();
 
+      const passwordVerification = UserMock.mockPasswordVerification();
       const encryptedPassword = UserMock.mockEncryptedPassword();
 
       const verifyPasswordPromise = new Promise<any>((resolve) => {
-        resolve({ isMatch: true, user });
+        resolve(passwordVerification);
       });
 
       const updateUserPromise = new Promise<User>((resolve) => {
@@ -161,10 +162,11 @@ describe('UserService', () => {
 
     it('should update user password, but the old password provided is invalid', async () => {
       const body = UserMock.mockPasswordChangeDto();
-      const user = UserMock.mockUser();
+
+      const passwordVerification = UserMock.mockPasswordVerification(false);
 
       const verifyPasswordPromise = new Promise<any>((resolve) => {
-        resolve({ isMatch: false, user });
+        resolve(passwordVerification);
       });
 
       jest
@@ -181,7 +183,7 @@ describe('UserService', () => {
     it('should confirm if the provided password is valid', async () => {
       const { email, password } = UserMock.mockUserDto();
       const user = UserMock.mockUser();
-      const response = { isMatch: true, user };
+      const response = UserMock.mockPasswordVerification();
 
       const getUserPromise = new Promise<User>((resolve) => {
         resolve(user);
@@ -217,7 +219,7 @@ describe('UserService', () => {
     it('should confirm that the provided password is invalid', async () => {
       const { email, password } = UserMock.mockUserDto();
       const user = UserMock.mockUser();
-      const response = { isMatch: false, user };
+      const response = UserMock.mockPasswordVerification(false);
 
       const getUserPromise = new Promise<User>((resolve) => {
         resolve(user);
