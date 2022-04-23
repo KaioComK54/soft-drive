@@ -11,7 +11,7 @@ export class AuthService {
   ) {}
 
   async login(payload: AuthDto): Promise<any> {
-    const { email, password } = payload;
+    const { email, password, ipAddress } = payload;
 
     const { isMatch, user } = await this._userService.verifyPassword(
       email,
@@ -21,7 +21,7 @@ export class AuthService {
     if (!isMatch) throw new UnauthorizedException();
 
     const accessToken = this._jwtService.sign(
-      { id: user.id },
+      { id: user.id, ipAddress },
       { expiresIn: process.env.JWT_EXPIRATION },
     );
 

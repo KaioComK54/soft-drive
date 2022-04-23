@@ -11,7 +11,12 @@ import {
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../shared/jwt/jwt.guard';
 import { UserService } from './user.service';
-import { UserDto, UserResponseDto, PasswordChangeDto } from './dto/user.dto';
+import {
+  UserDto,
+  UserResponseDto,
+  PasswordChangeDto,
+  ProfileUpdateDto,
+} from './dto/user.dto';
 
 @Controller('user')
 export class UserController {
@@ -41,5 +46,15 @@ export class UserController {
   ): Promise<void> {
     body.email = req.user?.email;
     await this._userService.changePassword(body);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Patch('profile')
+  async updateProfile(
+    @Req() req: any,
+    @Body(new ValidationPipe({ transform: true, whitelist: true }))
+    body: ProfileUpdateDto,
+  ): Promise<UserResponseDto> {
+    return this._userService.updateProfile(req.user?.id, body);
   }
 }

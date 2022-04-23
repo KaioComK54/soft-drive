@@ -4,9 +4,14 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
+import {
+  UserDto,
+  UserResponseDto,
+  PasswordChangeDto,
+  ProfileUpdateDto,
+} from './dto/user.dto';
 import { UserRepository } from './user.repository';
 import { UserMapper } from './dto/user.mapper';
-import { UserDto, UserResponseDto, PasswordChangeDto } from './dto/user.dto';
 
 @Injectable()
 export class UserService {
@@ -31,6 +36,17 @@ export class UserService {
     if (!user) throw new NotFoundException('User not found');
 
     return this._userMapper.toDto(user);
+  }
+
+  async updateProfile(
+    id: string,
+    body: ProfileUpdateDto,
+  ): Promise<UserResponseDto> {
+    const updatedUser = await this._userRepository.updateById(id, body);
+
+    if (!updatedUser) throw new NotFoundException('User not found');
+
+    return this._userMapper.toDto(updatedUser);
   }
 
   async changePassword(body: PasswordChangeDto): Promise<void> {

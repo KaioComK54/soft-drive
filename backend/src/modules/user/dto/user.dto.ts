@@ -5,6 +5,7 @@ import {
   IsDate,
   IsMongoId,
   IsOptional,
+  Length,
 } from 'class-validator';
 
 export class UserDto {
@@ -22,6 +23,7 @@ export class UserDto {
 
   @IsNotEmpty()
   @IsString()
+  @Length(8, 25)
   password: string;
 }
 
@@ -32,11 +34,23 @@ export class PasswordChangeDto {
 
   @IsNotEmpty()
   @IsString()
+  @Length(8, 25)
   oldPassword: string;
 
   @IsNotEmpty()
   @IsString()
+  @Length(8, 25)
   newPassword: string;
+}
+
+export class ProfileUpdateDto {
+  @IsOptional()
+  @IsString()
+  firstName: string;
+
+  @IsOptional()
+  @IsString()
+  lastName: string;
 }
 
 export class UserResponseDto {

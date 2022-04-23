@@ -1,4 +1,4 @@
-import { Controller, Post, Body, ValidationPipe } from '@nestjs/common';
+import { Controller, Post, Body, ValidationPipe, Req } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthDto } from './dto/auth.dto';
 
@@ -8,9 +8,11 @@ export class AuthController {
 
   @Post('signin')
   async login(
+    @Req() req: any,
     @Body(new ValidationPipe({ transform: true, whitelist: true }))
     body: AuthDto,
   ) {
+    body.ipAddress = req.ip;
     return this._authService.login(body);
   }
 }
