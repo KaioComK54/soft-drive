@@ -1,5 +1,5 @@
+import { NotFoundException, BadRequestException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { NotFoundException } from '@nestjs/common';
 import { getModelToken } from '@nestjs/mongoose';
 import * as bcrypt from 'bcrypt';
 import { UserRepository } from '../user.repository';
@@ -157,6 +157,81 @@ describe('UserService', () => {
       const result = await userService.changePassword(body);
 
       expect(result).toStrictEqual(undefined);
+    });
+
+    it('should update user password, but the old password provided is invalid', async () => {
+      const body = UserMock.mockPasswordChangeDto();
+      const user = UserMock.mockUser();
+
+      const verifyPasswordPromise = new Promise<any>((resolve) => {
+        resolve({ isMatch: false, user });
+      });
+
+      jest
+        .spyOn(userService, 'verifyPassword')
+        .mockImplementation(() => verifyPasswordPromise);
+
+      expect(async () => {
+        await userService.changePassword(body);
+      }).rejects.toThrow(BadRequestException);
+    });
+  });
+
+  describe('verifyPassword', () => {
+    it('should confirm if the provided password is valid', async () => {
+      const { email, password } = UserMock.mockUserDto();
+      const user = UserMock.mockUser();
+      const response = { isMatch: true, user };
+
+      const getUserPromise = new Promise<User>((resolve) => {
+        resolve(user);
+      });
+
+      jest
+        .spyOn(userRepository, 'findOneByEmail')
+        .mockImplementation(() => getUserPromise);
+
+      jest.spyOn(bcrypt, 'compare').mockImplementation(() => true);
+
+      const result = await userService.verifyPassword(email, password);
+
+      expect(result).toStrictEqual(response);
+    });
+
+    it('should confirm if the provided password is valid, but no user was found', async () => {
+      const { email, password } = UserMock.mockUserDto();
+
+      const getUserPromise = new Promise<User>((resolve) => {
+        resolve(null);
+      });
+
+      jest
+        .spyOn(userRepository, 'findOneByEmail')
+        .mockImplementation(() => getUserPromise);
+
+      expect(async () => {
+        await userService.verifyPassword(email, password);
+      }).rejects.toThrow(NotFoundException);
+    });
+
+    it('should confirm that the provided password is invalid', async () => {
+      const { email, password } = UserMock.mockUserDto();
+      const user = UserMock.mockUser();
+      const response = { isMatch: false, user };
+
+      const getUserPromise = new Promise<User>((resolve) => {
+        resolve(user);
+      });
+
+      jest
+        .spyOn(userRepository, 'findOneByEmail')
+        .mockImplementation(() => getUserPromise);
+
+      jest.spyOn(bcrypt, 'compare').mockImplementation(() => false);
+
+      const result = await userService.verifyPassword(email, password);
+
+      expect(result).toStrictEqual(response);
     });
   });
 });
