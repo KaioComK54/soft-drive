@@ -2,6 +2,7 @@ import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   saveUserData,
+  saveUserProfile,
   saveUserPassword,
   IMyData,
   IMyPassword,
@@ -15,6 +16,9 @@ const nameBlackList = {
   special: `\`!@#$%^&*()+=\[\]{};':"\\|,.<>\/?~`,
   directory: ["../", "./", "~/", "~"],
 };
+
+const passwordRegex =
+  /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
 
 const useProfile = () => {
   const user = useContext(UserContext);
@@ -61,10 +65,22 @@ const useProfile = () => {
     }
   };
 
-  const validatePassword = (oldPassword: string, newPassword: string) => {
-    if (oldPassword.length < 6 || newPassword.length < 6) {
+  const validatePassword = (password: string) => {
+    if (password.length < 8) {
       setErrorMessage("As senhas devem ter no mínimo 6 dígitos!");
       setErrors((errors) => [...errors, "oldPassword", "newPassword"]);
+      throw new Error();
+    }
+
+    if (!passwordRegex.test(password)) {
+      setErrorMessage(
+        `A senha deve possuir pelo menos: 
+         1 caractere minúsculo, 
+         1 caractere maiúsculo, 
+         1 dígito numérico, 
+         1 dígito especial.`
+      );
+      setErrors((errors) => [...errors, "password", "confirmPassword"]);
       throw new Error();
     }
   };
@@ -79,12 +95,13 @@ const useProfile = () => {
   const validatePasswords = ({ oldPassword, newPassword }: IMyPassword) => {
     setErrorMessage("");
     setErrors([]);
-    validatePassword(oldPassword, newPassword);
+    validatePassword(oldPassword);
+    validatePassword(newPassword);
   };
 
   const handleSubmitData = async (data: IMyData) => {
-    const result = await saveUserData(data);
-    if (result === 400) throw new AuthError("Erro no cadastro!");
+    const result = await saveUserProfile(data);
+    if (result >= 400) throw new AuthError("Erro ao alterar dados!");
     user?.fetchUserData();
     alert.success("Dados alterados com sucesso!");
   };

@@ -51,8 +51,8 @@ const ProfileDialog = ({ open, close }: IProfileProps) => {
           </Tabs>
         </div>
         <div>
-          <MyData value={currentTab} />
-          <MyPassword value={currentTab} />
+          <MyData value={currentTab} handleClose={handleClose} />
+          <MyPassword value={currentTab} handleClose={handleClose} />
         </div>
       </Container>
     </Dialog>
