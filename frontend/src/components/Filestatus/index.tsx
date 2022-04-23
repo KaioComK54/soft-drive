@@ -3,13 +3,14 @@ import React from "react";
 import FileEmpty from "./components/FileEmpty";
 import FileSelected from "./components/FileSelected";
 
-import { Container, Title } from "./styles";
+import { Container, Title, ErrorBox } from "./styles";
 
 interface props {
   file: File | any;
+  hasError: string;
 }
 
-const FileStatus = ({ file }: props) => {
+const FileStatus = ({ file, hasError }: props) => {
   const getFileStatus = () => {
     if (!file) return <FileEmpty />;
 
@@ -21,7 +22,10 @@ const FileStatus = ({ file }: props) => {
       <Title>
         {!file ? "Clique e selecione seus documentos" : "Arquivo selecionado"}
       </Title>
-      <Container>{getFileStatus()}</Container>
+      <Container>
+        {getFileStatus()}
+        {hasError && <ErrorBox>{hasError}</ErrorBox>}
+      </Container>
     </React.Fragment>
   );
 };

@@ -11,7 +11,7 @@ import { useRef } from "react";
 
 const Upload = () => {
   const inputRef = useRef<any>();
-  const { file, setFile, validadeFile, handleSubmit } = usefile();
+  const { file, setFile, errorMessage, validadeFile, handleSubmit } = usefile();
 
   const { validateError } = useError();
 
@@ -25,9 +25,9 @@ const Upload = () => {
     }
   };
 
-  const submit = () => {
+  const submit = async () => {
     try {
-      handleSubmit();
+      await handleSubmit();
     } catch (error: any) {
       validateError(error);
     }
@@ -48,7 +48,7 @@ const Upload = () => {
       <FileUploaderContainer
         onClick={() => !file && inputRef?.current?.click()}
       >
-        <FileStatus file={file} />
+        <FileStatus file={file} hasError={errorMessage} />
         <ActionButtons file={file} setFile={setFile} submitFile={submit} />
       </FileUploaderContainer>
     </Container>

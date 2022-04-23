@@ -6,7 +6,8 @@ interface props {
   name: string;
   placeholder: string;
   errors: string[];
-  type: string;
+  type?: string;
+  disabled?: boolean;
 }
 
 const Input = ({
