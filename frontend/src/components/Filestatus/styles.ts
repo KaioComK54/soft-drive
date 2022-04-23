@@ -15,6 +15,10 @@ export const Container = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
+
+  @media (max-width: 1000px) {
+    width: 90%;
+  }
 `;
 
 export const Title = styled.h3`
@@ -27,14 +31,8 @@ export const Title = styled.h3`
 
   @media (max-width: 1000px) {
     padding: 8px;
-    grid-gap: 0px;
-    height: calc(100vh - (40px + 48px + 56px));
+    font-size: 15px;
     justify-content: center;
-
-    .text {
-      font-size: 15px;
-      text-align: center;
-    }
   }
 `;
 

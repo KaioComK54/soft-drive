@@ -38,8 +38,10 @@ const useFile = () => {
 
     const result = await sendUserFile(data);
 
-    if (result instanceof Error)
-      throw new FileError("Erro ao enviar o arquivo!");
+    if (result.status === 422)
+      throw new FileError("Limite de envio de arquivo excedido!");
+
+    if (result.status >= 400) throw new FileError("Erro ao enviar o arquivo!");
 
     setFile(null);
     alert.success("Arquivo enviado com sucesso!");
@@ -79,7 +81,9 @@ const useFile = () => {
   const validateType = (file: File): never | any => {
     const { name } = file;
 
-    const [_, type] = name.split(".");
+    const nameSplitted = name.split(".");
+
+    const type = nameSplitted[nameSplitted.length - 1];
 
     if (!type) {
       setErrorMessage(fileErrorsMessage.typeError);

@@ -20,8 +20,8 @@ const useProfile = () => {
   const user = useContext(UserContext);
   const [firstName, setFirstName] = useState<string>(user?.firstName);
   const [lastName, setLastName] = useState<string>(user?.lastName);
-  const [password, setPassword] = useState<string>("");
-  const [confirmPassword, setConfirmPassword] = useState<string>("");
+  const [oldPassword, setOldPassword] = useState<string>("");
+  const [newPassword, setNewPassword] = useState<string>("");
 
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [errors, setErrors] = useState<string[]>([]);
@@ -38,11 +38,11 @@ const useProfile = () => {
   };
 
   const handlePassword = (value: string) => {
-    setPassword(value);
+    setOldPassword(value);
   };
 
   const handleConfirmPassword = (value: string) => {
-    setConfirmPassword(value);
+    setNewPassword(value);
   };
 
   const validadeNameOrLastName = (name: string) => {
@@ -61,16 +61,10 @@ const useProfile = () => {
     }
   };
 
-  const validatePassword = (password: string, confirmPassword: string) => {
-    if (password.length < 6 || confirmPassword.length < 6) {
+  const validatePassword = (oldPassword: string, newPassword: string) => {
+    if (oldPassword.length < 6 || newPassword.length < 6) {
       setErrorMessage("As senhas devem ter no mínimo 6 dígitos!");
-      setErrors((errors) => [...errors, "password", "confirmPassword"]);
-      throw new Error();
-    }
-
-    if (password !== confirmPassword) {
-      setErrorMessage("As senhas não coencidem!");
-      setErrors((errors) => [...errors, "password", "confirmPassword"]);
+      setErrors((errors) => [...errors, "oldPassword", "newPassword"]);
       throw new Error();
     }
   };
@@ -82,24 +76,25 @@ const useProfile = () => {
     validadeNameOrLastName(lastName);
   };
 
-  const validatePasswords = ({ password, confirmPassword }: IMyPassword) => {
+  const validatePasswords = ({ oldPassword, newPassword }: IMyPassword) => {
     setErrorMessage("");
     setErrors([]);
-    validatePassword(password, confirmPassword);
+    validatePassword(oldPassword, newPassword);
   };
 
   const handleSubmitData = async (data: IMyData) => {
-    // const result = await saveUserData(data);
-    // if (result === 409) throw new AuthError("Erro no cadastro!");
-    // alert.success("Dados alterados com sucesso!");
-    // navigate("/entrar");
+    const result = await saveUserData(data);
+    if (result === 400) throw new AuthError("Erro no cadastro!");
+    user?.fetchUserData();
+    alert.success("Dados alterados com sucesso!");
   };
 
   const handleSubmitPassword = async (data: IMyPassword) => {
-    // const result = await saveUserPassword(data);
-    // if (result === 409) throw new AuthError("Erro no cadastro!");
-    // alert.success("Dados alterados com sucesso!");
-    // navigate("/entrar");
+    const result = await saveUserPassword(data);
+    if (result === 400) throw new AuthError("Erro ao trocar a senha!");
+    setOldPassword("");
+    setNewPassword("");
+    alert.success("Senha alterada com sucesso!");
   };
 
   return {
@@ -111,12 +106,12 @@ const useProfile = () => {
     errors,
     firstName,
     lastName,
-    password,
-    confirmPassword,
+    oldPassword,
+    newPassword,
     setName: handleFirstname,
     setLastName: handleLastName,
-    setPassword: handlePassword,
-    setConfirmPassword: handleConfirmPassword,
+    setOldPassword: handlePassword,
+    setNewPassword: handleConfirmPassword,
   };
 };
 

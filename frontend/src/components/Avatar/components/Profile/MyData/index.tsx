@@ -65,6 +65,7 @@ const MyData = ({ value }: Props) => {
             errors={errors}
             value={firstName}
             placeholder="Nome"
+            disabled={true}
           />
           <Input
             name="lastName"
@@ -72,6 +73,7 @@ const MyData = ({ value }: Props) => {
             errors={errors}
             value={lastName}
             placeholder="Sobrenome"
+            disabled={true}
           />
           <div className="btn-container">
             <Button

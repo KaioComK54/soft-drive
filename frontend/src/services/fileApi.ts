@@ -41,7 +41,7 @@ const sendUserFile = async (data: FormData) =>
       },
     })
     .then((response) => response)
-    .catch((error) => new Error(error));
+    .catch((error) => error.response);
 
 const deleteAFile = async (id: string) => {
   await axios

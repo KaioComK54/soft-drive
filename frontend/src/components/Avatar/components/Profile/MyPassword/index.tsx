@@ -1,4 +1,4 @@
-import { TabPanel, Button } from "../styles";
+import { TabPanel, Button, ErrorBox } from "../styles";
 import Input from "components/Input";
 
 import useProfile from "validations/useProfile";
@@ -10,20 +10,22 @@ interface Props {
 
 const MyPassword = ({ value }: Props) => {
   const {
-    password,
-    confirmPassword,
-    setPassword,
-    setConfirmPassword,
+    oldPassword,
+    newPassword,
+    setOldPassword,
+    setNewPassword,
     validatePasswords,
     handleSubmitPassword,
+    errorMessage,
+    errors,
   } = useProfile();
   const { validateError } = useError();
 
-  const submit = async () => {
+  const submitPass = async () => {
     try {
-      validatePasswords({ password, confirmPassword });
+      validatePasswords({ oldPassword, newPassword });
 
-      await handleSubmitPassword({ password, confirmPassword });
+      await handleSubmitPassword({ oldPassword, newPassword });
     } catch (error: any) {
       validateError(error);
     }
@@ -39,24 +41,29 @@ const MyPassword = ({ value }: Props) => {
       <div className="profile-container">
         <div className="profile-data">
           <Input
-            name="password"
-            onChange={setPassword}
-            errors={[]}
-            value={password}
+            name="oldPassword"
+            onChange={setOldPassword}
+            errors={errors}
+            value={oldPassword}
             placeholder="Senha"
+            type="password"
           />
           <Input
-            name="confirmPassword"
-            onChange={setConfirmPassword}
-            errors={[]}
-            value={confirmPassword}
+            name="newPassword"
+            onChange={setNewPassword}
+            errors={errors}
+            value={newPassword}
             placeholder="Confirmar senha"
+            type="password"
           />
+
+          {errorMessage && <ErrorBox>{errorMessage}</ErrorBox>}
+
           <div className="btn-container">
             <Button
               className="primary"
-              disabled={password === "" || confirmPassword === ""}
-              onClick={() => submit()}
+              disabled={oldPassword === "" || newPassword === ""}
+              onClick={() => submitPass()}
             >
               Salvar
             </Button>
