@@ -15,9 +15,7 @@ export class UserRepository {
   }
 
   async create(user: User): Promise<User> {
-    const newUser = new this._userModel(user);
-
-    return newUser.save();
+    return this._userModel.create(user);
   }
 
   async updateById(id: string, body: Record<string, any>): Promise<User> {
