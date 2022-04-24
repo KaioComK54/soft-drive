@@ -18,7 +18,9 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     const { id, ipAddress } = payload;
     const { ip } = req;
 
-    if (ip != ipAddress) throw new UnauthorizedException();
+    console.log(`IP recebido: ${ip}, Jwt: ${ipAddress}`);
+
+    // if (ip != ipAddress) throw new UnauthorizedException();
 
     const user = await this._userService.getUserById(id).catch(() => null);
 
