@@ -8,9 +8,9 @@ async function bootstrap() {
   const logger = new ApiLogger();
 
   app.enableCors({
-    origin: '*',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     exposedHeaders: ['Content-Disposition', 'FileName'],
+    origin: '*',
   });
 
   app.useGlobalFilters(new HttpExceptionFilter(logger));
