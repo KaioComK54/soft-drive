@@ -8,10 +8,9 @@ async function bootstrap() {
   const logger = new ApiLogger();
 
   app.enableCors({
-    origin: 'https://soft-drive.herokuapp.com/',
+    origin: '*',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     exposedHeaders: ['Content-Disposition', 'FileName'],
-    allowedHeaders: ['Origin', 'X-Requested', 'Content-Type', 'Authorization'],
   });
 
   app.useGlobalFilters(new HttpExceptionFilter(logger));
